@@ -8,7 +8,14 @@
 <body>
 
 <s:iterator value="adventures" var="adventure">
-    <s:property value="#adventure.name"/>
+    <s:property value="#adventure.name"/> -
+    <button>
+        <a href="<s:url action='ViewAdventure' includeParams="all">
+            <s:param name="adventureName" value="%{#adventure.name}" />
+        </s:url>">
+            View
+        </a>
+    </button>
 </s:iterator>
 
 </body>

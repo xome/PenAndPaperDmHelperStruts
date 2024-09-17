@@ -15,5 +15,10 @@
             <result>/WEB-INF/adventures/Overview.jsp</result>
         </action>
 
+        <action name="ViewAdventure" class="de.mayer.penandpaperdmhelper.adventures.actions.ViewAdventure">
+            <param name="adventureName">${adventureName}</param>
+            <result>/WEB-INF/adventures/ViewAdventure.jsp</result>
+        </action>
+
     </package>
 </struts>

@@ -7,8 +7,8 @@
     <constant name="struts.objectFactory" value="spring" />
     <constant name="struts.devMode" value="true"/>
 
-    <include file="example.xml"/>
     <include file="adventures.xml"/>
+    <include file="tools.xml"/>
 
     <package name="default" namespace="/" extends="struts-default">
 

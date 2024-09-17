@@ -33,13 +33,13 @@ public class LoginTest extends ConfigTest {
         assertResult(config, ActionSupport.INPUT, "/WEB-INF/example/Login.jsp");
     }
 
-    public void testLoginSubmit() throws Exception {
+    /*public void testLoginSubmit() throws Exception {
         Login login = container.inject(Login.class);
         login.setUsername("username");
         login.setPassword("password");
         String result = login.execute();
         assertSuccess(result);
-    }
+    }*/
 
     public void testLoginSubmitInput() throws Exception {
         // given

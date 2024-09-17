@@ -16,5 +16,10 @@
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="apache.nexus" />
+      <option name="name" value="ASF Nexus Staging" />
+      <option name="url" value="https://repository.apache.org/content/groups/staging/" />
+    </remote-repository>
   </component>
 </project>
