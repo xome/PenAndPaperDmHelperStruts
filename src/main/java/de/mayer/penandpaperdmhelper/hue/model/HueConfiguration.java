@@ -1,4 +1,4 @@
-package de.mayer.penandpaperdmhelper.setup.model;
+package de.mayer.penandpaperdmhelper.hue.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

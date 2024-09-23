@@ -2,8 +2,8 @@ package de.mayer.penandpaperdmhelper.setup.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import de.mayer.penandpaperdmhelper.CookieKeys;
-import de.mayer.penandpaperdmhelper.setup.model.HueConfiguration;
-import de.mayer.penandpaperdmhelper.setup.service.HueService;
+import de.mayer.penandpaperdmhelper.hue.model.HueConfiguration;
+import de.mayer.penandpaperdmhelper.hue.HueService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.action.ServletRequestAware;
@@ -15,6 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class HueSetup extends ActionSupport implements ServletRequestAware, ServletResponseAware {
@@ -32,24 +33,22 @@ public class HueSetup extends ActionSupport implements ServletRequestAware, Serv
         this.hueService = hueService;
     }
 
-    public String requestHueToken(){
+    @Override
+    public String execute() throws Exception {
+        var cookieHueIp = getOptionalCookieValue(CookieKeys.HueIp.toString());
+        var cookieHueToken = getOptionalCookieValue(CookieKeys.HueToken.toString());
+
+        var hueConfig = hueService.checkHueOk(cookieHueIp, cookieHueToken);
+        setHueIp(hueConfig.getIp());
+        setHueToken(hueConfig.getToken());
         return SUCCESS;
     }
 
-    @Override
-    public String execute() throws Exception {
-        var cookieHueIp = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals(CookieKeys.HueIp.toString()))
+    private Optional<String> getOptionalCookieValue(String HueToken) {
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(HueToken))
                 .map(Cookie::getValue)
                 .findFirst();
-        var cookieHueToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals(CookieKeys.HueToken.toString()))
-                .map(Cookie::getValue)
-                .findFirst();
-
-        hueService.checkHueOk(cookieHueIp, );
-
-        return super.execute();
     }
 
 
@@ -61,6 +60,17 @@ public class HueSetup extends ActionSupport implements ServletRequestAware, Serv
         Cookie cookieToken = new Cookie(CookieKeys.HueToken.toString(), hueConfigurationBean.getToken());
         cookieToken.setMaxAge(-1);
         response.addCookie(cookieToken);
+
+        return SUCCESS;
+    }
+
+    public String requestHueToken() {
+        hueService.requestToken(
+                hueService.checkHueOk(
+                        getOptionalCookieValue(CookieKeys.HueIp.toString()),
+                        getOptionalCookieValue(CookieKeys.HueToken.toString())
+                )
+        );
 
         return SUCCESS;
     }

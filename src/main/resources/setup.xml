@@ -25,7 +25,7 @@
             </result>
         </action>
 
-        <action name="GetHueTocken" class="de.mayer.penandpaperdmhelper.setup.actions.HueSetup" method="requestHueToken">
+        <action name="GetHueToken" class="de.mayer.penandpaperdmhelper.setup.actions.HueSetup" method="requestHueToken">
             <interceptor-ref name="servletConfig"/>
             <interceptor-ref name="basicStack"/>
             <result type="redirectAction">

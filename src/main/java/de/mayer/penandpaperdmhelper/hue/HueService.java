@@ -1,7 +1,6 @@
-package de.mayer.penandpaperdmhelper.setup.service;
+package de.mayer.penandpaperdmhelper.hue;
 
-import de.mayer.penandpaperdmhelper.setup.actions.HueSetup;
-import de.mayer.penandpaperdmhelper.setup.model.HueConfiguration;
+import de.mayer.penandpaperdmhelper.hue.model.HueConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,7 @@ import java.util.Optional;
 @Service
 public class HueService {
     private static final Logger log = LogManager.getLogger(HueService.class);
-    private HueServiceResolver hueServiceResolver;
+    private final HueServiceResolver hueServiceResolver;
     private final HueHttpApi hueHttpApi;
 
     public HueService(HueServiceResolver hueServiceResolver, HueHttpApi hueHttpApi) {
@@ -23,7 +22,7 @@ public class HueService {
         HueConfiguration configuration = new HueConfiguration();
 
         var hueIp = cookieHueIp.map((cookie) -> {
-            HueSetup.log.debug("Hue IP from cookie: {}", cookie);
+            log.debug("Hue IP from cookie: {}", cookie);
             return cookie;
         }).orElseGet(this::getIpFromMDnsService);
 
@@ -31,9 +30,21 @@ public class HueService {
             hueIp = getIpFromMDnsService();
         }
 
+        if (hueHttpApi.isIpOk(hueIp)){
+            configuration.setIp(hueIp);
+        }
 
+        if (token.isPresent() && !token.get().isEmpty()) {
+            configuration.setToken(token.get());
+            if (!hueHttpApi.isConfigOk(configuration))
+                configuration.setToken(null);
+        }
 
         return configuration;
+    }
+
+    public HueConfiguration requestToken(HueConfiguration configuration) {
+        return hueHttpApi.requestToken(configuration);
     }
 
     private String getIpFromMDnsService() {

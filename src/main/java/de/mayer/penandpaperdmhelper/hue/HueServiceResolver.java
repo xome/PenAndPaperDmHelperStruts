@@ -1,4 +1,4 @@
-package de.mayer.penandpaperdmhelper.setup.service;
+package de.mayer.penandpaperdmhelper.hue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +9,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.jmdns.*;
 import java.io.IOException;
-import java.net.Inet4Address;
 
 @Service
 @Scope("singleton")
