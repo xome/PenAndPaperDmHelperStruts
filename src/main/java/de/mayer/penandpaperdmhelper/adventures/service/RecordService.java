@@ -34,4 +34,8 @@ public class RecordService {
     public boolean isChapterLink(RecordInChapter record) {
         return record instanceof ChapterLink;
     }
+
+    public boolean renderPresentationButton(RecordInChapter record) {
+        return record instanceof Picture && ((Picture) record).isShareableWithGroup();
+    }
 }

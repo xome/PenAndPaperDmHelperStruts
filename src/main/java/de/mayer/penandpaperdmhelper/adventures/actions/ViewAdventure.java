@@ -8,20 +8,29 @@ import de.mayer.penandpaperdmhelper.adventures.service.RecordService;
 import de.mayer.penandpaperdmhelper.adventures.service.DataFromBackendService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.action.CookiesAware;
+import org.apache.struts2.action.ServletResponseAware;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @Component
-public class ViewAdventure extends ActionSupport {
+public class ViewAdventure extends ActionSupport implements CookiesAware, ServletResponseAware {
 
 
     private static final Logger log = LogManager.getLogger(ViewAdventure.class);
     private final DataFromBackendService service;
     private final RecordService recordService;
+    private ServletResponse resp;
 
     private String adventureName;
     private List<Chapter> chapters;
+    private String hueIp;
+
+    public static final String KEY_HUE_IP = "hue_ip";
 
     public ViewAdventure(DataFromBackendService dataRetrieval, RecordService recordService) {
         this.service = dataRetrieval;
@@ -67,6 +76,10 @@ public class ViewAdventure extends ActionSupport {
         return imgSrcValue;
     }
 
+    public boolean renderPresentationButton(RecordInChapter record){
+        return recordService.renderPresentationButton(record);
+    }
+
     public List<Chapter> getChapters() {
         return chapters;
     }
@@ -77,5 +90,20 @@ public class ViewAdventure extends ActionSupport {
 
     public String getAdventureName() {
         return adventureName;
+    }
+
+    @Override
+    public void withCookies(Map<String, String> cookies) {
+        hueIp = cookies.getOrDefault(KEY_HUE_IP, null);
+    }
+
+    public String getHueIp() {
+        return hueIp;
+    }
+
+
+    @Override
+    public void withServletResponse(HttpServletResponse response) {
+        this.resp = response;
     }
 }

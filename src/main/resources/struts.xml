@@ -8,7 +8,7 @@
     <constant name="struts.devMode" value="true"/>
 
     <include file="adventures.xml"/>
-    <include file="tools.xml"/>
+    <include file="setup.xml" />
 
     <package name="default" namespace="/" extends="struts-default">
 

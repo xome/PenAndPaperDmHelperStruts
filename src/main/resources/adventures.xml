@@ -18,6 +18,10 @@
         <action name="ViewAdventure" class="de.mayer.penandpaperdmhelper.adventures.actions.ViewAdventure">
             <param name="adventureName">${adventureName}</param>
             <result>/WEB-INF/adventures/ViewAdventure.jsp</result>
+            <interceptor-ref name="cookie">
+                <param name="cookiesName">hueIp, hueToken</param>
+                <param name="cookiesValue">*</param>
+            </interceptor-ref>
         </action>
 
     </package>
