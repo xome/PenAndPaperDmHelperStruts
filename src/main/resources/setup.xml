@@ -8,18 +8,31 @@
 -->
 <struts>
     <package name="setup" namespace="/setup" extends="struts-default">
+        <interceptors>
+            <interceptor-stack name="appDefaultStack">
+                <interceptor-ref name="defaultStack">
+                    <param name="exception.logEnabled">true</param>
+                    <param name="exception.logLevel">ERROR</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="appDefaultStack" />
+
 
         <default-action-ref name="" />
 
         <action name="HueSetup" class="de.mayer.penandpaperdmhelper.setup.actions.HueSetup">
             <interceptor-ref name="servletConfig"/>
             <interceptor-ref name="basicStack"/>
+            <interceptor-ref name="appDefaultStack" />
             <result>/WEB-INF/setup/HueSetup.jsp</result>
         </action>
 
         <action name="HueSetupSubmit" class="de.mayer.penandpaperdmhelper.setup.actions.HueSetup" method="executeForm">
             <interceptor-ref name="servletConfig"/>
             <interceptor-ref name="basicStack"/>
+            <interceptor-ref name="appDefaultStack" />
             <result type="redirectAction">
                 <param name="actionName">HueSetup</param>
             </result>
@@ -28,7 +41,11 @@
         <action name="GetHueToken" class="de.mayer.penandpaperdmhelper.setup.actions.HueSetup" method="requestHueToken">
             <interceptor-ref name="servletConfig"/>
             <interceptor-ref name="basicStack"/>
-            <result type="redirectAction">
+            <interceptor-ref name="appDefaultStack" />
+            <result name="success" type="redirectAction">
+                <param name="actionName">HueSetup</param>
+            </result>
+            <result name="error" type="redirectAction">
                 <param name="actionName">HueSetup</param>
             </result>
         </action>

@@ -7,10 +7,10 @@
 </head>
 <body>
 
-<s:if test="%{hueIp != null}">
-    <label>The configured Hue Bridge's IP is: </label><s:property value="hueIp"/>
-    <s:if test="%{hueToken != null}">
-        <label>The assigned Hue Token is: </label><s:property value="hueToken"/>
+<s:if test="%{hueConfigurationBean.ip != null}">
+    <label>The configured Hue Bridge's IP is: </label><s:property value="hueConfigurationBean.ip"/>
+    <s:if test="%{hueConfigurationBean.token != null}">
+        <label>The assigned Hue Token is: </label><s:property value="hueConfigurationBean.token"/>
     </s:if>
     <s:else>
         <label>Press Button on your Hue Bridge and then press this button to get a token: </label>
@@ -20,7 +20,7 @@
 
 <h2>Manually configure IP</h2>
 <s:form action="HueSetupSubmit">
-    <s:textfield name="hueConfigurationBean.ip" label="IP" value="%{hueIp}"/>
+    <s:textfield name="hueConfigurationBean.ip" label="IP" value="%{hueConfigurationBean.ip}"/>
     <s:submit/>
 </s:form>
 

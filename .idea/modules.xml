@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/penAndPaperDmHelperStruts.iml" filepath="$PROJECT_DIR$/penAndPaperDmHelperStruts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PenAndPaperDmHelperStruts.iml" filepath="$PROJECT_DIR$/PenAndPaperDmHelperStruts.iml" />
     </modules>
   </component>
 </project>

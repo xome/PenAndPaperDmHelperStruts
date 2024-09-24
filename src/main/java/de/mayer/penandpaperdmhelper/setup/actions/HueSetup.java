@@ -22,8 +22,6 @@ public class HueSetup extends ActionSupport implements ServletRequestAware, Serv
 
     private static final Logger log = LogManager.getLogger(HueSetup.class);
     private final HueService hueService;
-    private String hueIp;
-    private String hueToken;
     private HttpServletResponse response;
 
     private HueConfiguration hueConfigurationBean;
@@ -38,9 +36,7 @@ public class HueSetup extends ActionSupport implements ServletRequestAware, Serv
         var cookieHueIp = getOptionalCookieValue(CookieKeys.HueIp.toString());
         var cookieHueToken = getOptionalCookieValue(CookieKeys.HueToken.toString());
 
-        var hueConfig = hueService.checkHueOk(cookieHueIp, cookieHueToken);
-        setHueIp(hueConfig.getIp());
-        setHueToken(hueConfig.getToken());
+        this.hueConfigurationBean = hueService.checkHueOk(cookieHueIp, cookieHueToken);
         return SUCCESS;
     }
 
@@ -64,8 +60,8 @@ public class HueSetup extends ActionSupport implements ServletRequestAware, Serv
         return SUCCESS;
     }
 
-    public String requestHueToken() {
-        hueService.requestToken(
+    public String requestHueToken() throws Exception {
+        this.hueConfigurationBean = hueService.requestToken(
                 hueService.checkHueOk(
                         getOptionalCookieValue(CookieKeys.HueIp.toString()),
                         getOptionalCookieValue(CookieKeys.HueToken.toString())
@@ -82,22 +78,6 @@ public class HueSetup extends ActionSupport implements ServletRequestAware, Serv
 
     public void setHueConfigurationBean(HueConfiguration hueConfigurationBean) {
         this.hueConfigurationBean = hueConfigurationBean;
-    }
-
-    public String getHueIp() {
-        return hueIp;
-    }
-
-    public void setHueIp(String hueIp) {
-        this.hueIp = hueIp;
-    }
-
-    public String getHueToken() {
-        return hueToken;
-    }
-
-    public void setHueToken(String hueToken) {
-        this.hueToken = hueToken;
     }
 
     @Override

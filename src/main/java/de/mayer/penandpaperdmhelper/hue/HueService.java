@@ -43,7 +43,7 @@ public class HueService {
         return configuration;
     }
 
-    public HueConfiguration requestToken(HueConfiguration configuration) {
+    public HueConfiguration requestToken(HueConfiguration configuration) throws HueButtonNotPressedException {
         return hueHttpApi.requestToken(configuration);
     }
 

@@ -1,9 +1,11 @@
 package de.mayer.penandpaperdmhelper.hue;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.mayer.penandpaperdmhelper.hue.model.HueConfiguration;
+import de.mayer.penandpaperdmhelper.hue.model.api.ApiErrorResponse;
 import de.mayer.penandpaperdmhelper.hue.model.api.ApiRequest;
-import de.mayer.penandpaperdmhelper.hue.model.api.ApiResponse;
+import de.mayer.penandpaperdmhelper.hue.model.api.ApiSuccessResponse;
 import de.mayer.penandpaperdmhelper.hue.model.api.HueApiObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -94,16 +96,28 @@ public class HueHttpApi {
         return resp.statusCode() == HttpStatus.OK.value();
     }
 
-    public HueConfiguration requestToken(HueConfiguration configuration) {
+    public HueConfiguration requestToken(HueConfiguration configuration) throws HueButtonNotPressedException {
         var newConfiguration = new HueConfiguration();
         newConfiguration.setIp(configuration.getIp());
         var resp = POST(configuration, Path.PostApi, new ApiRequest("pen-and-paper-dm-helper", true));
         if (resp == null) return null;
-        List<ApiResponse> apiResonses = objectMapper
-                .convertValue(resp.body(),
-                        objectMapper.getTypeFactory().constructCollectionType(List.class, ApiResponse.class));
-        if (apiResonses != null && !apiResonses.isEmpty()) {
-            newConfiguration.setToken(apiResonses.get(0).success().username());
+
+        if (resp.body().contains("\"error\"")){
+            List<ApiErrorResponse> apiErrorResponses = objectMapper
+                    .convertValue(resp.body(),
+                            objectMapper.getTypeFactory().constructCollectionType(List.class, ApiErrorResponse.class));
+            var error = apiErrorResponses.get(0).error();
+            log.error("Error from Api: {}", error.description());
+            if (error.type() == 101) {
+                throw new HueButtonNotPressedException();
+            }
+        } else {
+            List<ApiSuccessResponse> apiResponses = objectMapper
+                    .convertValue(resp.body(),
+                            objectMapper.getTypeFactory().constructCollectionType(List.class, ApiSuccessResponse.class));
+            if (apiResponses != null && !apiResponses.isEmpty()) {
+                newConfiguration.setToken(apiResponses.get(0).success().username());
+            }
         }
         return newConfiguration;
     }
@@ -143,7 +157,8 @@ public class HueHttpApi {
             log.warn("Failed to connect to {}", ip, e);
             return null;
         }
-        log.trace("Response: {} - {}", response.statusCode(), response.body().substring(0, Math.min(response.body().length(), 30)));
+        log.trace("Response: {} - {}", response.statusCode(),
+                response.body().substring(0, Math.min(response.body().length(), 30)));
         return response;
     }
 
