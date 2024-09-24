@@ -40,7 +40,7 @@ public class HueHttpApi {
 
 
     @PostConstruct
-    private void postConstruct() throws NoSuchAlgorithmException, KeyManagementException {
+    void postConstruct() throws NoSuchAlgorithmException, KeyManagementException {
         var trustManager = new X509ExtendedTrustManager() {
 
             @Override

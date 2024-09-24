@@ -9,6 +9,11 @@ public class HueConfiguration {
     private String ip;
     private String token;
 
+    public HueConfiguration(String ip, String token) {
+        this.ip = ip;
+        this.token = token;
+    }
+
     public HueConfiguration() {
     }
 

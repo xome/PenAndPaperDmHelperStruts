@@ -1,4 +1,6 @@
 package de.mayer.penandpaperdmhelper.hue.model.api;
 
-public record ApiErrorResponse(ApiError error) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record ApiErrorResponse(@JsonProperty("error") ApiError error) {
 }
