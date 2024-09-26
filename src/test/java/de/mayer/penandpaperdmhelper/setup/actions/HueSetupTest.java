@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import de.mayer.ConfigTest;
 import de.mayer.penandpaperdmhelper.CookieKeys;
 import org.apache.struts2.junit.StrutsSpringTestCase;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.springframework.http.HttpStatus;
@@ -28,11 +30,22 @@ public class HueSetupTest extends StrutsSpringTestCase {
     public HueSetupTest() throws Exception {
     }
 
+    @BeforeClass
+    public static void beforeALl() throws Exception {
+        wireMockRule.start();
+    }
+
+    @AfterClass
+    public static void afterAll() throws Exception {
+        wireMockRule.stop();
+    }
+
     public void testHueSetupActionHasHueSetupAsClass() {
         configTest.assertActionHasClass("/setup", "HueSetup", HueSetup.class.getName());
     }
 
-    public void testRequestTokenRaisesButtonNotPressed() {
+    public void testRequestTokenRaisesButtonNotPressed() throws Exception {
+        wireMockInstance.start();
         wireMockInstance.stubFor(post(urlPathEqualTo("/api"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
@@ -42,7 +55,7 @@ public class HueSetupTest extends StrutsSpringTestCase {
         request.setCookies(new Cookie(CookieKeys.HueIp.toString(), "0.0.0.0:" + wireMockInstance.httpsPort()));
 
         var proxy = getActionProxy("/setup/GetHueToken.action");
-
+        proxy.execute();
 
     }
 
