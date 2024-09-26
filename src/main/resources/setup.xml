@@ -20,7 +20,7 @@
         <default-interceptor-ref name="appDefaultStack" />
 
 
-        <default-action-ref name="" />
+        <default-action-ref name="HueSetup" />
 
         <action name="HueSetup" class="de.mayer.penandpaperdmhelper.setup.actions.HueSetup">
             <interceptor-ref name="servletConfig"/>

@@ -1,19 +1,21 @@
-package de.mayer.penandpaperdmhelper.adventures.model;
+package de.mayer.penandpaperdmhelper.presentAdventure.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public class Text extends RecordInChapter {
-    private final String text;
+public class ChapterLink extends RecordInChapter{
 
-    public Text(int index, String text) {
+    private final Chapter chapterTo;
+
+    public ChapterLink(int index, Chapter chapterTo) {
         super(index);
-        this.text = text;
+        this.chapterTo = chapterTo;
     }
 
-    public String getText() {
-        return text;
+
+    public Chapter getChapterTo() {
+        return chapterTo;
     }
 
     @Override
@@ -21,19 +23,19 @@ public class Text extends RecordInChapter {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Text text1 = (Text) o;
-        return Objects.equals(text, text1.text);
+        ChapterLink that = (ChapterLink) o;
+        return Objects.equals(chapterTo, that.chapterTo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), text);
+        return Objects.hash(super.hashCode(), chapterTo);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("text", text)
+                .append("chapterTo", chapterTo)
                 .append("index", getIndex())
                 .toString();
     }

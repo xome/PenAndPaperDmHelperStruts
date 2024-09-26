@@ -1,5 +1,5 @@
-<%@ page import="de.mayer.penandpaperdmhelper.adventures.model.Text" %>
-<%@ page import="de.mayer.penandpaperdmhelper.adventures.model.Picture" %>
+<%@ page import="de.mayer.penandpaperdmhelper.presentAdventure.model.Text" %>
+<%@ page import="de.mayer.penandpaperdmhelper.presentAdventure.model.Picture" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>

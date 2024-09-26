@@ -1,4 +1,4 @@
-package de.mayer.penandpaperdmhelper.adventures.model;
+package de.mayer.penandpaperdmhelper.presentAdventure.model;
 
 import java.util.Objects;
 

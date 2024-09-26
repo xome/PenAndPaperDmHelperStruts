@@ -1,6 +1,6 @@
-package de.mayer.penandpaperdmhelper.adventures.service;
+package de.mayer.penandpaperdmhelper.presentAdventure.service;
 
-import de.mayer.penandpaperdmhelper.adventures.model.*;
+import de.mayer.penandpaperdmhelper.presentAdventure.model.*;
 import org.springframework.stereotype.Service;
 
 @Service

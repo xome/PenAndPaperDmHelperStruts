@@ -1,11 +1,11 @@
-package de.mayer.penandpaperdmhelper.adventures.actions;
+package de.mayer.penandpaperdmhelper.presentAdventure.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
-import de.mayer.penandpaperdmhelper.adventures.model.Chapter;
-import de.mayer.penandpaperdmhelper.adventures.model.Picture;
-import de.mayer.penandpaperdmhelper.adventures.model.RecordInChapter;
-import de.mayer.penandpaperdmhelper.adventures.service.RecordService;
-import de.mayer.penandpaperdmhelper.adventures.service.DataFromBackendService;
+import de.mayer.penandpaperdmhelper.presentAdventure.model.Chapter;
+import de.mayer.penandpaperdmhelper.presentAdventure.model.Picture;
+import de.mayer.penandpaperdmhelper.presentAdventure.model.RecordInChapter;
+import de.mayer.penandpaperdmhelper.presentAdventure.service.RecordService;
+import de.mayer.penandpaperdmhelper.presentAdventure.service.DataFromBackendService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.action.CookiesAware;

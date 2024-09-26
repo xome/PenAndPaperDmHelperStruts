@@ -1,4 +1,4 @@
-<%@ page import="de.mayer.penandpaperdmhelper.adventures.model.Adventure" %>
+<%@ page import="de.mayer.penandpaperdmhelper.presentAdventure.model.Adventure" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>

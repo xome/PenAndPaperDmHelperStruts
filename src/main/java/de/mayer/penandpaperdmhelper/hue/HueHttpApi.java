@@ -1,6 +1,6 @@
 package de.mayer.penandpaperdmhelper.hue;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.mayer.penandpaperdmhelper.hue.model.HueConfiguration;
 import de.mayer.penandpaperdmhelper.hue.model.api.ApiErrorResponse;
@@ -28,7 +28,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.List;
 
 @Service
 public class HueHttpApi {
@@ -103,20 +102,28 @@ public class HueHttpApi {
         if (resp == null) return null;
 
         if (resp.body().contains("\"error\"")){
-            List<ApiErrorResponse> apiErrorResponses = objectMapper
-                    .convertValue(resp.body(),
-                            objectMapper.getTypeFactory().constructCollectionType(List.class, ApiErrorResponse.class));
-            var error = apiErrorResponses.get(0).error();
+            ApiErrorResponse[] apiErrorResponses;
+            try {
+                apiErrorResponses = objectMapper
+                        .readValue(resp.body(), ApiErrorResponse[].class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            var error = apiErrorResponses[0].error();
             log.error("Error from Api: {}", error.description());
             if (error.type() == 101) {
                 throw new HueButtonNotPressedException();
             }
         } else {
-            List<ApiSuccessResponse> apiResponses = objectMapper
-                    .convertValue(resp.body(),
-                            objectMapper.getTypeFactory().constructCollectionType(List.class, ApiSuccessResponse.class));
-            if (apiResponses != null && !apiResponses.isEmpty()) {
-                newConfiguration.setToken(apiResponses.get(0).success().username());
+            ApiSuccessResponse[] apiResponses = null;
+            try {
+                apiResponses = objectMapper
+                        .readValue(resp.body(), ApiSuccessResponse[].class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            if (apiResponses != null && apiResponses.length > 0) {
+                newConfiguration.setToken(apiResponses[0].success().username());
             }
         }
         return newConfiguration;

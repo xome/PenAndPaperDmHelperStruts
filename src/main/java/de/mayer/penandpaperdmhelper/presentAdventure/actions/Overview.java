@@ -1,8 +1,8 @@
-package de.mayer.penandpaperdmhelper.adventures.actions;
+package de.mayer.penandpaperdmhelper.presentAdventure.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
-import de.mayer.penandpaperdmhelper.adventures.model.Adventure;
-import de.mayer.penandpaperdmhelper.adventures.service.DataFromBackendService;
+import de.mayer.penandpaperdmhelper.presentAdventure.model.Adventure;
+import de.mayer.penandpaperdmhelper.presentAdventure.service.DataFromBackendService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

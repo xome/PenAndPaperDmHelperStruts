@@ -11,11 +11,11 @@
 
         <default-action-ref name="Overview" />
 
-        <action name="Overview" class="de.mayer.penandpaperdmhelper.adventures.actions.Overview">
+        <action name="Overview" class="de.mayer.penandpaperdmhelper.presentAdventure.actions.Overview">
             <result>/WEB-INF/adventures/Overview.jsp</result>
         </action>
 
-        <action name="ViewAdventure" class="de.mayer.penandpaperdmhelper.adventures.actions.ViewAdventure">
+        <action name="ViewAdventure" class="de.mayer.penandpaperdmhelper.presentAdventure.actions.ViewAdventure">
             <param name="adventureName">${adventureName}</param>
             <result>/WEB-INF/adventures/ViewAdventure.jsp</result>
             <interceptor-ref name="cookie">

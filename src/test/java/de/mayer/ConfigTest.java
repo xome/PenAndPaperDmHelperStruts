@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package de.mayer.example;
+package de.mayer;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.config.RuntimeConfiguration;
@@ -24,54 +24,65 @@ import com.opensymphony.xwork2.config.entities.ActionConfig;
 import com.opensymphony.xwork2.config.entities.ResultConfig;
 import com.opensymphony.xwork2.config.providers.XmlConfigurationProvider;
 import org.apache.struts2.config.StrutsXmlConfigurationProvider;
-import org.apache.struts2.junit.StrutsTestCase;
+import org.apache.struts2.junit.StrutsSpringTestCase;
 
 import java.util.List;
 import java.util.Map;
 
-public class ConfigTest extends StrutsTestCase {
+public class ConfigTest extends StrutsSpringTestCase {
 
-    protected void assertSuccess(String result) {
+    private static ConfigTest configTest;
+
+    public static ConfigTest getInstance() throws Exception {
+        if (configTest == null){
+            configTest = new ConfigTest();
+            configTest.setUp();
+        }
+        return configTest;
+    }
+
+    public void assertSuccess(String result) {
         assertEquals("Expected a success result!", ActionSupport.SUCCESS, result);
     }
 
-    protected void assertInput(String result) {
+    public void assertInput(String result) {
         assertEquals("Expected an input result!", ActionSupport.INPUT, result);
     }
 
-    protected Map<String, List<String>> assertFieldErrors(ActionSupport action) {
+    public Map<String, List<String>> assertFieldErrors(ActionSupport action) {
         assertTrue(action.hasFieldErrors());
         return action.getFieldErrors();
     }
 
-    protected void assertFieldError(Map<String, List<String>> fieldErrors, String fieldName, String errorMessage) {
+    public void assertFieldError(Map<String, List<String>> fieldErrors, String fieldName, String errorMessage) {
         List<String> errors = fieldErrors.get(fieldName);
         assertNotNull("Expected errors for " + fieldName, errors);
-        assertTrue("Expected errors for " + fieldName, errors.size() > 0);
+        assertFalse("Expected errors for " + fieldName, errors.isEmpty());
         // TODO: Should be a loop
         assertEquals(errorMessage, errors.get(0));
     }
 
-    protected void setUp() throws Exception {
+    @Override
+    public void setUp() throws Exception {
         super.setUp();
         XmlConfigurationProvider c = new StrutsXmlConfigurationProvider("struts.xml");
         configurationManager.addContainerProvider(c);
         configurationManager.reload();
     }
 
-    protected ActionConfig assertClass(String namespace, String action_name, String class_name) {
+    public ActionConfig assertActionHasClass(String namespace, String actionName, String expectedClassName) {
         RuntimeConfiguration configuration = configurationManager.getConfiguration().getRuntimeConfiguration();
-        ActionConfig config = configuration.getActionConfig(namespace, action_name);
+        ActionConfig config = configuration.getActionConfig(namespace, actionName);
         assertNotNull("Mssing action", config);
-        assertEquals("Wrong class name: [" + config.getClassName() + "]", class_name, config.getClassName());
+        assertEquals("Wrong class name: [" + config.getClassName() + "]", expectedClassName, config.getClassName());
         return config;
     }
 
-    protected ActionConfig assertClass(String action_name, String class_name) {
-        return assertClass("", action_name, class_name);
+    public ActionConfig assertActionHasClass(String actionName, String expectedClassName) {
+        return assertActionHasClass("", actionName, expectedClassName);
     }
 
-    protected void assertResult(ActionConfig config, String resultName, String resultValue) {
+    public void assertResult(ActionConfig config, String resultName, String resultValue) {
         Map<String, ResultConfig> results = config.getResults();
         ResultConfig result = results.get(resultName);
         Map<String, String> params = result.getParams();
@@ -81,7 +92,8 @@ public class ConfigTest extends StrutsTestCase {
         assertEquals("Wrong result value: [" + value + "]", resultValue, value);
     }
 
-    public void testConfig() {
+    public void testAppStarts() throws Exception {
+        getInstance();
         assertNotNull(configurationManager);
     }
 
