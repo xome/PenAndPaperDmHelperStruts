@@ -25,11 +25,17 @@ import com.opensymphony.xwork2.config.entities.ResultConfig;
 import com.opensymphony.xwork2.config.providers.XmlConfigurationProvider;
 import org.apache.struts2.config.StrutsXmlConfigurationProvider;
 import org.apache.struts2.junit.StrutsSpringTestCase;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 import java.util.Map;
 
 public class ConfigTest extends StrutsSpringTestCase {
+    @Override
+    protected void setupBeforeInitDispatcher() throws Exception {
+        applicationContext = new AnnotationConfigApplicationContext("de.mayer.penandpaperdmhelper");
+        super.setupBeforeInitDispatcher();
+    }
 
     private static ConfigTest configTest;
 

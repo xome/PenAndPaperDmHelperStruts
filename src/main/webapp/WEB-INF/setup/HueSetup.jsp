@@ -15,6 +15,10 @@
     <s:else>
         <label>Press Button on your Hue Bridge and then press this button to get a token: </label>
         <button><a href="<s:url action="GetHueToken" />">click</a></button>
+        <s:if test="%{exception != null}">
+            hallo!
+            <p>${getExceptionMessage(exception)}</p>
+        </s:if>
     </s:else>
 </s:if>
 

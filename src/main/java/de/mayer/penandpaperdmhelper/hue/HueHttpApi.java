@@ -82,17 +82,23 @@ public class HueHttpApi {
     }
 
     public boolean isIpOk(String ip) {
+        log.traceEntry(ip);
         HttpResponse<String> response = GET(ip, null, Path.GetBridge);
         if (response == null) return false;
         // we do not have a token right now, this is okay
-        return response.statusCode() == HttpStatus.NOT_FOUND.value()
+        var ret = response.statusCode() == HttpStatus.NOT_FOUND.value()
                 && response.body().contains("hue-logo");
+        log.traceExit(ret);
+        return ret;
     }
 
     public boolean isConfigOk(HueConfiguration configuration) {
+        log.traceEntry(configuration::toString);
         var resp = GET(configuration, Path.GetBridge);
         if (resp == null) return false;
-        return resp.statusCode() == HttpStatus.OK.value();
+        var ret = resp.statusCode() == HttpStatus.OK.value();
+        log.traceExit(ret);
+        return ret;
     }
 
     public HueConfiguration requestToken(HueConfiguration configuration) throws HueButtonNotPressedException {

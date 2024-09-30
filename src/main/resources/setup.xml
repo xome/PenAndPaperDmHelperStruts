@@ -45,6 +45,7 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">HueSetup</param>
             </result>
+            <exception-mapping exception="de.mayer.penandpaperdmhelper.hue.HueButtonNotPressedException" result="error" />
             <result name="error" type="redirectAction">
                 <param name="actionName">HueSetup</param>
             </result>
